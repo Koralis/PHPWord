@@ -41,7 +41,7 @@ class Image extends Text
         $parentWriter = $this->parentWriter;
 
         $content = '';
-        if (!$parentWriter->isPdf()) {
+//         if (!$parentWriter->isPdf()) {
             $imageData = $this->element->getImageStringData(true);
             if ($imageData !== null) {
                 $styleWriter = new ImageStyleWriter($this->element->getStyle());
@@ -52,7 +52,7 @@ class Image extends Text
                 $content .= "<img border=\"0\" style=\"{$style}\" src=\"{$imageData}\"/>";
                 $content .= $this->writeClosing();
             }
-        }
+//         }
 
         return $content;
     }
