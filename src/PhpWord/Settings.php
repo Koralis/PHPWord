@@ -133,6 +133,13 @@ class Settings
      * @var bool
      */
     private static $outputEscapingEnabled = false;
+
+    /**
+     * Custom CSS for HTML/PDF output
+     *
+     * @var array
+     */
+    private static $customCss = [];
     
     /**
      * Return the compatibility option used by the XMLWriter
@@ -446,5 +453,21 @@ class Settings
     public static function getCompatibility()
     {
         return self::hasCompatibility();
+    }
+
+    /**
+     * @return array
+     */
+    public static function getCustomCss()
+    {
+        return self::$customCss;
+    }
+
+    /**
+     * @param array $customCss
+     */
+    public static function setCustomCss($customCss = [])
+    {
+        self::$customCss = $customCss;
     }
 }

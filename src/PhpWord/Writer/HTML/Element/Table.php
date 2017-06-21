@@ -37,9 +37,18 @@ class Table extends AbstractElement
 
         $content = '';
         $rows = $this->element->getRows();
+
+        $className = '';
+        if($this->element->getStyle() instanceof \PhpOffice\PhpWord\Style\Table){
+            $className = $this->element->getStyle()->getStyleName();
+        }else{
+            $className = $this->element->getStyle();
+        }
+
         $rowCount = count($rows);
         if ($rowCount > 0) {
-            $content .= '<table>' . PHP_EOL;
+            $tableClassNameTag = (isset($className)) ? 'class="'.$className.'"' : '';
+            $content .= '<table '.$tableClassNameTag.'>' . PHP_EOL;
             foreach ($rows as $row) {
                 /** @var $row \PhpOffice\PhpWord\Element\Row Type hint */
                 $rowStyle = $row->getStyle();
@@ -48,8 +57,24 @@ class Table extends AbstractElement
                 $content .= '<tr>' . PHP_EOL;
                 foreach ($row->getCells() as $cell) {
                     $writer = new Container($this->parentWriter, $cell);
+
+                    if($cell->getStyle() instanceof \PhpOffice\PhpWord\Style\Cell){
+                        $cellClassName = $cell->getStyle()->getStyleName();
+                    }else{
+                        $cellClassName = $cell->getStyle();
+                    }
+
+                    $vAlign = '';
+                    if($cell->getStyle() instanceof \PhpOffice\PhpWord\Style\Cell){
+                        $vAlign = $cell->getStyle()->getVAlign();
+                    }
+
+                    $cellClassNameTag = (isset($cellClassName)) ? 'class="'.$cellClassName.'"' : '';
+                    $cellValignNameTag = (!empty($vAlign)) ? 'valign="'.$vAlign.'"' : '';
+
                     $cellTag = $tblHeader ? 'th' : 'td';
-                    $content .= "<{$cellTag}>" . PHP_EOL;
+
+                    $content .= "<{$cellTag} {$cellClassNameTag} {$cellValignNameTag}>" . PHP_EOL;
                     $content .= $writer->write();
                     $content .= "</{$cellTag}>" . PHP_EOL;
                 }

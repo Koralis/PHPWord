@@ -112,6 +112,12 @@ class Head extends AbstractPart
             $css .= $selector . ' {' . $styleWriter->write() . '}' . PHP_EOL;
         }
 
+        $customCss = Settings::getCustomCss();
+        foreach($customCss as $selector => $style) {
+            $styleWriter = new GenericStyleWriter($style);
+            $css .= $selector . ' {' . $styleWriter->write() . '}' . PHP_EOL;
+        }
+
         // Custom styles
         $customStyles = Style::getStyles();
         if (is_array($customStyles)) {
